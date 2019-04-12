@@ -2,37 +2,12 @@
 #include "TFC\TFC.h"
 
 
-//struct AVG_IMAGE
-//{
-//	const uint16_t SIZE = 10;
-//	uint16_t N = 0;
-//	uint16_t** img;
-//	uint16_t* avg;
-//	
-//	void add(uint16_t* arr)
-//	{
-//		if(N < SIZE)
-//		{
-//			for(int i = 0; i < N; i++)
-//			{
-//				img[i] = arr;
-//			}
-//			for(int i = 0; i < 128; i++)
-//			{
-//				for(int j = 0; j < N; j++)
-//				{
-//					avg[i] += img[j][i];
-//				}
-//				avg[i] = avg[i] / N;
-//			}
-//		}
-//	}
-//	
-//	uint16_t* getAVG()
-//	{
-//		return avg;
-//	}
-//};
+uint32_t t, Delta, i=0;
+uint16_t  LineScanTemp[128],LSarray[128], LSavg, Ledge, Redge, Center, GoodRedge, GoodLedge;
+float	TmpLSavg;
+
+void Drive(float strength);
+void Stop();
 
 void demo()
 {
@@ -40,7 +15,6 @@ void demo()
 	//Let's look at the middle 2 switches
 	switch((TFC_GetDIP_Switch()>>1)&0x03)
 	{
-		default:
 		case 0 :
 		//Demo mode 0 just tests the switches and LED's
 		if(TFC_PUSH_BUTTON_0_PRESSED)
@@ -122,7 +96,7 @@ void demo()
 		
 		
 		TFC_SetServo(0,0.0);						//center wheels
-		TFC_HBRIDGE_DISABLE;
+		TFC_HBRIDGE_ENABLE;
 		TFC_SetMotorPWM(TFC_ReadPot(0),TFC_ReadPot(0));	//start motor at post 0 setting			
 		
 		if(TFC_Ticker[0]>100 && LineScanImageReady==1)
@@ -258,9 +232,9 @@ void demo()
 
 void exampleEdgeDetect()
 {
+	
 	TFC_SetServo(0,0.0);						//center wheels
-	TFC_HBRIDGE_ENABLE;
-	TFC_SetMotorPWM(TFC_ReadPot(0),TFC_ReadPot(0));	//start motor at post 0 setting			
+	Drive(0.3);	
 	
 	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
 	{
@@ -408,11 +382,23 @@ void SetServoDirection(int d)
 	TFC_Delay_mS(100);
 }
 
-void Drive(int delayMS, float strength)
+void DriveT(int delayMS, float strength)
 {
 	TFC_HBRIDGE_ENABLE;
 	TFC_SetMotorPWM(strength,strength);
 	TFC_Delay_mS(delayMS);
+	TFC_HBRIDGE_DISABLE;
+}
+
+void Drive(float strength)
+{
+	TFC_HBRIDGE_ENABLE;
+	TFC_SetMotorPWM(strength, strength);
+}
+
+void Stop()
+{
+	TFC_SetMotorPWM(0,0);
 	TFC_HBRIDGE_DISABLE;
 }
 
@@ -430,26 +416,23 @@ void figure8()
 	
 	
 	SetServoDirection(LEFT);
-	Drive(3000, 0.55);
+	DriveT(3000, 0.55);
 	TFC_SetServo(0,0.05);
 	TFC_Delay_mS(3000);
-	Drive(4000, 0.35);
+	DriveT(4000, 0.35);
 
 	while(!TFC_PUSH_BUTTON_0_PRESSED) continue;
 	TFC_Delay_mS(3000); 
 	
 	SetServoDirection(RIGHT);
-	Drive(3000, 0.55 );
+	DriveT(3000, 0.55 );
 	TFC_SetServo(0,-0.05);
 	TFC_Delay_mS(3000);
-	Drive(4000, 0.35);
+	DriveT(4000, 0.35);
 }
 
 int main(void)
 {
-	uint32_t t, Delta, i=0;
-	uint16_t  LineScanTemp[128],LSarray[128], LSavg, Ledge, Redge, Center, GoodRedge, GoodLedge;
-	float	TmpLSavg;
 	
 	TFC_Init();
 	t = 0;
@@ -470,7 +453,7 @@ int main(void)
 	for(;;)
 	{
 		TFC_Task();
-		demo();
+		exampleEdgeDetect();
 	}
 	
 	return 0;
