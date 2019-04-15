@@ -15,6 +15,7 @@
 "./Sources/TFC/TFC.o"
 "./Sources/sa_mtb.o"
 "./Sources/main.o"
+"./Sources/cup_car.o"
 -mcpu=cortex-m0
 -mthumb
 -mfloat-abi=soft

@@ -1,0 +1,826 @@
+   1              		.cpu cortex-m0
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 34, 0
+  11              		.eabi_attribute 18, 4
+  12              		.code	16
+  13              		.file	"cup_car.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.DriveT,"ax",%progbits
+  18              		.align	2
+  19              		.global	DriveT
+  20              		.code	16
+  21              		.thumb_func
+  23              	DriveT:
+  24              	.LFB0:
+  25              		.file 1 "../Sources/cup_car.c"
+   1:../Sources/cup_car.c **** /*
+   2:../Sources/cup_car.c ****  * cup_car.c
+   3:../Sources/cup_car.c ****  *
+   4:../Sources/cup_car.c ****  *  Created on: Apr 15, 2019
+   5:../Sources/cup_car.c ****  *      Author: Josh
+   6:../Sources/cup_car.c ****  */
+   7:../Sources/cup_car.c **** 
+   8:../Sources/cup_car.c **** #include "cup_car.h"
+   9:../Sources/cup_car.c **** 
+  10:../Sources/cup_car.c **** 
+  11:../Sources/cup_car.c **** void DriveT(int delayMS, float strength)
+  12:../Sources/cup_car.c **** {
+  26              		.loc 1 12 0
+  27              		.cfi_startproc
+  28 0000 80B5     		push	{r7, lr}
+  29              	.LCFI0:
+  30              		.cfi_def_cfa_offset 8
+  31              		.cfi_offset 7, -8
+  32              		.cfi_offset 14, -4
+  33 0002 82B0     		sub	sp, sp, #8
+  34              	.LCFI1:
+  35              		.cfi_def_cfa_offset 16
+  36 0004 00AF     		add	r7, sp, #0
+  37              	.LCFI2:
+  38              		.cfi_def_cfa_register 7
+  39 0006 7860     		str	r0, [r7, #4]
+  40 0008 3960     		str	r1, [r7]
+  13:../Sources/cup_car.c **** 	TFC_HBRIDGE_ENABLE;
+  41              		.loc 1 13 0
+  42 000a 0A4B     		ldr	r3, .L2
+  43 000c 8022     		mov	r2, #128
+  44 000e 9203     		lsl	r2, r2, #14
+  45 0010 5A60     		str	r2, [r3, #4]
+  14:../Sources/cup_car.c **** 	TFC_SetMotorPWM(strength,strength);
+  46              		.loc 1 14 0
+  47 0012 3A68     		ldr	r2, [r7]
+  48 0014 3B68     		ldr	r3, [r7]
+  49 0016 101C     		add	r0, r2, #0
+  50 0018 191C     		add	r1, r3, #0
+  51 001a FFF7FEFF 		bl	TFC_SetMotorPWM
+  15:../Sources/cup_car.c **** 	TFC_Delay_mS(delayMS);
+  52              		.loc 1 15 0
+  53 001e 7B68     		ldr	r3, [r7, #4]
+  54 0020 181C     		mov	r0, r3
+  55 0022 FFF7FEFF 		bl	TFC_Delay_mS
+  16:../Sources/cup_car.c **** 	TFC_HBRIDGE_DISABLE;
+  56              		.loc 1 16 0
+  57 0026 034B     		ldr	r3, .L2
+  58 0028 8022     		mov	r2, #128
+  59 002a 9203     		lsl	r2, r2, #14
+  60 002c 9A60     		str	r2, [r3, #8]
+  17:../Sources/cup_car.c **** }
+  61              		.loc 1 17 0
+  62 002e BD46     		mov	sp, r7
+  63 0030 02B0     		add	sp, sp, #8
+  64              		@ sp needed for prologue
+  65 0032 80BD     		pop	{r7, pc}
+  66              	.L3:
+  67              		.align	2
+  68              	.L2:
+  69 0034 00F10F40 		.word	1074786560
+  70              		.cfi_endproc
+  71              	.LFE0:
+  73              		.section	.text.Drive,"ax",%progbits
+  74              		.align	2
+  75              		.global	Drive
+  76              		.code	16
+  77              		.thumb_func
+  79              	Drive:
+  80              	.LFB1:
+  18:../Sources/cup_car.c **** 
+  19:../Sources/cup_car.c **** void Drive(float strength)
+  20:../Sources/cup_car.c **** {
+  81              		.loc 1 20 0
+  82              		.cfi_startproc
+  83 0000 80B5     		push	{r7, lr}
+  84              	.LCFI3:
+  85              		.cfi_def_cfa_offset 8
+  86              		.cfi_offset 7, -8
+  87              		.cfi_offset 14, -4
+  88 0002 82B0     		sub	sp, sp, #8
+  89              	.LCFI4:
+  90              		.cfi_def_cfa_offset 16
+  91 0004 00AF     		add	r7, sp, #0
+  92              	.LCFI5:
+  93              		.cfi_def_cfa_register 7
+  94 0006 7860     		str	r0, [r7, #4]
+  21:../Sources/cup_car.c **** 	TFC_HBRIDGE_ENABLE;
+  95              		.loc 1 21 0
+  96 0008 064B     		ldr	r3, .L5
+  97 000a 8022     		mov	r2, #128
+  98 000c 9203     		lsl	r2, r2, #14
+  99 000e 5A60     		str	r2, [r3, #4]
+  22:../Sources/cup_car.c **** 	TFC_SetMotorPWM(strength, strength);
+ 100              		.loc 1 22 0
+ 101 0010 7A68     		ldr	r2, [r7, #4]
+ 102 0012 7B68     		ldr	r3, [r7, #4]
+ 103 0014 101C     		add	r0, r2, #0
+ 104 0016 191C     		add	r1, r3, #0
+ 105 0018 FFF7FEFF 		bl	TFC_SetMotorPWM
+  23:../Sources/cup_car.c **** }
+ 106              		.loc 1 23 0
+ 107 001c BD46     		mov	sp, r7
+ 108 001e 02B0     		add	sp, sp, #8
+ 109              		@ sp needed for prologue
+ 110 0020 80BD     		pop	{r7, pc}
+ 111              	.L6:
+ 112 0022 C046     		.align	2
+ 113              	.L5:
+ 114 0024 00F10F40 		.word	1074786560
+ 115              		.cfi_endproc
+ 116              	.LFE1:
+ 118              		.section	.text.Stop,"ax",%progbits
+ 119              		.align	2
+ 120              		.global	Stop
+ 121              		.code	16
+ 122              		.thumb_func
+ 124              	Stop:
+ 125              	.LFB2:
+  24:../Sources/cup_car.c **** 
+  25:../Sources/cup_car.c **** void Stop()
+  26:../Sources/cup_car.c **** {
+ 126              		.loc 1 26 0
+ 127              		.cfi_startproc
+ 128 0000 80B5     		push	{r7, lr}
+ 129              	.LCFI6:
+ 130              		.cfi_def_cfa_offset 8
+ 131              		.cfi_offset 7, -8
+ 132              		.cfi_offset 14, -4
+ 133 0002 00AF     		add	r7, sp, #0
+ 134              	.LCFI7:
+ 135              		.cfi_def_cfa_register 7
+  27:../Sources/cup_car.c **** 	TFC_SetMotorPWM(0,0);
+ 136              		.loc 1 27 0
+ 137 0004 0022     		mov	r2, #0
+ 138 0006 0023     		mov	r3, #0
+ 139 0008 101C     		add	r0, r2, #0
+ 140 000a 191C     		add	r1, r3, #0
+ 141 000c FFF7FEFF 		bl	TFC_SetMotorPWM
+  28:../Sources/cup_car.c **** 	TFC_HBRIDGE_DISABLE;
+ 142              		.loc 1 28 0
+ 143 0010 024B     		ldr	r3, .L8
+ 144 0012 8022     		mov	r2, #128
+ 145 0014 9203     		lsl	r2, r2, #14
+ 146 0016 9A60     		str	r2, [r3, #8]
+  29:../Sources/cup_car.c **** }
+ 147              		.loc 1 29 0
+ 148 0018 BD46     		mov	sp, r7
+ 149              		@ sp needed for prologue
+ 150 001a 80BD     		pop	{r7, pc}
+ 151              	.L9:
+ 152              		.align	2
+ 153              	.L8:
+ 154 001c 00F10F40 		.word	1074786560
+ 155              		.cfi_endproc
+ 156              	.LFE2:
+ 158              		.section	.text.Steer,"ax",%progbits
+ 159              		.align	2
+ 160              		.global	Steer
+ 161              		.code	16
+ 162              		.thumb_func
+ 164              	Steer:
+ 165              	.LFB3:
+  30:../Sources/cup_car.c **** 
+  31:../Sources/cup_car.c **** void Steer(DIR d, float strength)
+  32:../Sources/cup_car.c **** {
+ 166              		.loc 1 32 0
+ 167              		.cfi_startproc
+ 168 0000 80B5     		push	{r7, lr}
+ 169              	.LCFI8:
+ 170              		.cfi_def_cfa_offset 8
+ 171              		.cfi_offset 7, -8
+ 172              		.cfi_offset 14, -4
+ 173 0002 82B0     		sub	sp, sp, #8
+ 174              	.LCFI9:
+ 175              		.cfi_def_cfa_offset 16
+ 176 0004 00AF     		add	r7, sp, #0
+ 177              	.LCFI10:
+ 178              		.cfi_def_cfa_register 7
+ 179 0006 021C     		mov	r2, r0
+ 180 0008 3960     		str	r1, [r7]
+ 181 000a FB1D     		add	r3, r7, #7
+ 182 000c 1A70     		strb	r2, [r3]
+  33:../Sources/cup_car.c **** 	switch(d)
+ 183              		.loc 1 33 0
+ 184 000e FB1D     		add	r3, r7, #7
+ 185 0010 1B78     		ldrb	r3, [r3]
+ 186 0012 052B     		cmp	r3, #5
+ 187 0014 25D8     		bhi	.L11
+ 188 0016 9A00     		lsl	r2, r3, #2
+ 189 0018 154B     		ldr	r3, .L18
+ 190 001a D318     		add	r3, r2, r3
+ 191 001c 1B68     		ldr	r3, [r3]
+ 192 001e 9F46     		mov	pc, r3
+ 193              		.section	.rodata.Steer,"a",%progbits
+ 194              		.align	2
+ 195              	.L17:
+ 196 0000 62000000 		.word	.L11
+ 197 0004 3E000000 		.word	.L12
+ 198 0008 20000000 		.word	.L13
+ 199 000c 4A000000 		.word	.L14
+ 200 0010 32000000 		.word	.L15
+ 201 0014 56000000 		.word	.L16
+ 202              		.section	.text.Steer
+ 203              	.L13:
+  34:../Sources/cup_car.c **** 	{
+  35:../Sources/cup_car.c **** 		case LEFT: 
+  36:../Sources/cup_car.c **** 			TFC_SetServo(0, -1.0 * strength);
+ 204              		.loc 1 36 0
+ 205 0020 3B68     		ldr	r3, [r7]
+ 206 0022 8022     		mov	r2, #128
+ 207 0024 1206     		lsl	r2, r2, #24
+ 208 0026 5340     		eor	r3, r2
+ 209 0028 0020     		mov	r0, #0
+ 210 002a 191C     		add	r1, r3, #0
+ 211 002c FFF7FEFF 		bl	TFC_SetServo
+  37:../Sources/cup_car.c **** 			break;
+ 212              		.loc 1 37 0
+ 213 0030 17E0     		b	.L11
+ 214              	.L15:
+  38:../Sources/cup_car.c **** 		case RIGHT:
+  39:../Sources/cup_car.c **** 			TFC_SetServo(0, strength);
+ 215              		.loc 1 39 0
+ 216 0032 3B68     		ldr	r3, [r7]
+ 217 0034 0020     		mov	r0, #0
+ 218 0036 191C     		add	r1, r3, #0
+ 219 0038 FFF7FEFF 		bl	TFC_SetServo
+  40:../Sources/cup_car.c **** 			break;
+ 220              		.loc 1 40 0
+ 221 003c 11E0     		b	.L11
+ 222              	.L12:
+  41:../Sources/cup_car.c **** 		case CENTER:
+  42:../Sources/cup_car.c **** 			TFC_SetServo(0,0);
+ 223              		.loc 1 42 0
+ 224 003e 0023     		mov	r3, #0
+ 225 0040 0020     		mov	r0, #0
+ 226 0042 191C     		add	r1, r3, #0
+ 227 0044 FFF7FEFF 		bl	TFC_SetServo
+  43:../Sources/cup_car.c **** 			break;
+ 228              		.loc 1 43 0
+ 229 0048 0BE0     		b	.L11
+ 230              	.L14:
+  44:../Sources/cup_car.c **** 		case CENTER_L:
+  45:../Sources/cup_car.c **** 			TFC_SetServo(0, +0.05);
+ 231              		.loc 1 45 0
+ 232 004a 0A4B     		ldr	r3, .L18+4
+ 233 004c 0020     		mov	r0, #0
+ 234 004e 191C     		add	r1, r3, #0
+ 235 0050 FFF7FEFF 		bl	TFC_SetServo
+  46:../Sources/cup_car.c **** 			break;
+ 236              		.loc 1 46 0
+ 237 0054 05E0     		b	.L11
+ 238              	.L16:
+  47:../Sources/cup_car.c **** 		case CENTER_R:
+  48:../Sources/cup_car.c **** 			TFC_SetServo(0, -0.05);
+ 239              		.loc 1 48 0
+ 240 0056 084B     		ldr	r3, .L18+8
+ 241 0058 0020     		mov	r0, #0
+ 242 005a 191C     		add	r1, r3, #0
+ 243 005c FFF7FEFF 		bl	TFC_SetServo
+  49:../Sources/cup_car.c **** 			break;
+ 244              		.loc 1 49 0
+ 245 0060 C046     		mov	r8, r8
+ 246              	.L11:
+  50:../Sources/cup_car.c **** 	}
+  51:../Sources/cup_car.c **** 	TFC_Delay_mS(20);
+ 247              		.loc 1 51 0
+ 248 0062 1420     		mov	r0, #20
+ 249 0064 FFF7FEFF 		bl	TFC_Delay_mS
+  52:../Sources/cup_car.c **** }
+ 250              		.loc 1 52 0
+ 251 0068 BD46     		mov	sp, r7
+ 252 006a 02B0     		add	sp, sp, #8
+ 253              		@ sp needed for prologue
+ 254 006c 80BD     		pop	{r7, pc}
+ 255              	.L19:
+ 256 006e C046     		.align	2
+ 257              	.L18:
+ 258 0070 00000000 		.word	.L17
+ 259 0074 CDCC4C3D 		.word	1028443341
+ 260 0078 CDCC4CBD 		.word	-1119040307
+ 261              		.cfi_endproc
+ 262              	.LFE3:
+ 264              		.section	.rodata
+ 265              		.align	2
+ 266              	.LC5:
+ 267 0000 25582C00 		.ascii	"%X,\000"
+ 268              		.align	2
+ 269              	.LC8:
+ 270 0004 255800   		.ascii	"%X\000"
+ 271 0007 00       		.align	2
+ 272              	.LC10:
+ 273 0008 0D0A00   		.ascii	"\015\012\000"
+ 274 000b 00       		.align	2
+ 275              	.LC12:
+ 276 000c 2C00     		.ascii	",\000"
+ 277              		.section	.text.printLineScanData,"ax",%progbits
+ 278              		.align	2
+ 279              		.global	printLineScanData
+ 280              		.code	16
+ 281              		.thumb_func
+ 283              	printLineScanData:
+ 284              	.LFB4:
+  53:../Sources/cup_car.c **** 
+  54:../Sources/cup_car.c **** //void figure8()
+  55:../Sources/cup_car.c **** //{
+  56:../Sources/cup_car.c **** //
+  57:../Sources/cup_car.c **** //	int RESET = 0;
+  58:../Sources/cup_car.c **** //	int LEFT = -1;
+  59:../Sources/cup_car.c **** //	int RIGHT = 1;
+  60:../Sources/cup_car.c **** //	
+  61:../Sources/cup_car.c **** //	while(!TFC_PUSH_BUTTON_0_PRESSED) continue;
+  62:../Sources/cup_car.c **** //	TFC_Delay_mS(3000);
+  63:../Sources/cup_car.c **** //	
+  64:../Sources/cup_car.c **** //	TFC_Task();
+  65:../Sources/cup_car.c **** //	
+  66:../Sources/cup_car.c **** //	
+  67:../Sources/cup_car.c **** //	SetServoDirection(LEFT);
+  68:../Sources/cup_car.c **** //	DriveT(3000, 0.55);
+  69:../Sources/cup_car.c **** //	TFC_SetServo(0,0.05);
+  70:../Sources/cup_car.c **** //	TFC_Delay_mS(3000);
+  71:../Sources/cup_car.c **** //	DriveT(4000, 0.35);
+  72:../Sources/cup_car.c **** //
+  73:../Sources/cup_car.c **** //	while(!TFC_PUSH_BUTTON_0_PRESSED) continue;
+  74:../Sources/cup_car.c **** //	TFC_Delay_mS(3000); 
+  75:../Sources/cup_car.c **** //	
+  76:../Sources/cup_car.c **** //	SetServoDirection(RIGHT);
+  77:../Sources/cup_car.c **** //	DriveT(3000, 0.55 );
+  78:../Sources/cup_car.c **** //	TFC_SetServo(0,-0.05);
+  79:../Sources/cup_car.c **** //	TFC_Delay_mS(3000);
+  80:../Sources/cup_car.c **** //	DriveT(4000, 0.35);
+  81:../Sources/cup_car.c **** //}
+  82:../Sources/cup_car.c **** 
+  83:../Sources/cup_car.c **** void printLineScanData(int t, int i)
+  84:../Sources/cup_car.c **** {
+ 285              		.loc 1 84 0
+ 286              		.cfi_startproc
+ 287 0000 80B5     		push	{r7, lr}
+ 288              	.LCFI11:
+ 289              		.cfi_def_cfa_offset 8
+ 290              		.cfi_offset 7, -8
+ 291              		.cfi_offset 14, -4
+ 292 0002 84B0     		sub	sp, sp, #16
+ 293              	.LCFI12:
+ 294              		.cfi_def_cfa_offset 24
+ 295 0004 00AF     		add	r7, sp, #0
+ 296              	.LCFI13:
+ 297              		.cfi_def_cfa_register 7
+ 298 0006 7860     		str	r0, [r7, #4]
+ 299 0008 3960     		str	r1, [r7]
+  85:../Sources/cup_car.c **** 	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
+ 300              		.loc 1 85 0
+ 301 000a 374B     		ldr	r3, .L30
+ 302 000c 1B68     		ldr	r3, [r3]
+ 303 000e 642B     		cmp	r3, #100
+ 304 0010 66D9     		bls	.L20
+ 305              		.loc 1 85 0 is_stmt 0
+ 306 0012 364B     		ldr	r3, .L30+4
+ 307 0014 1B78     		ldrb	r3, [r3]
+ 308 0016 DBB2     		uxtb	r3, r3
+ 309 0018 012B     		cmp	r3, #1
+ 310 001a 61D1     		bne	.L20
+  86:../Sources/cup_car.c **** 	{
+  87:../Sources/cup_car.c **** 		TFC_Ticker[0] = 0;
+ 311              		.loc 1 87 0 is_stmt 1
+ 312 001c 324B     		ldr	r3, .L30
+ 313 001e 0022     		mov	r2, #0
+ 314 0020 1A60     		str	r2, [r3]
+  88:../Sources/cup_car.c **** 		LineScanImageReady=0;
+ 315              		.loc 1 88 0
+ 316 0022 324B     		ldr	r3, .L30+4
+ 317 0024 0022     		mov	r2, #0
+ 318 0026 1A70     		strb	r2, [r3]
+  89:../Sources/cup_car.c **** 		if(t==0)
+ 319              		.loc 1 89 0
+ 320 0028 7B68     		ldr	r3, [r7, #4]
+ 321 002a 002B     		cmp	r3, #0
+ 322 002c 02D1     		bne	.L22
+  90:../Sources/cup_car.c **** 			t=3;
+ 323              		.loc 1 90 0
+ 324 002e 0323     		mov	r3, #3
+ 325 0030 7B60     		str	r3, [r7, #4]
+ 326 0032 02E0     		b	.L23
+ 327              	.L22:
+  91:../Sources/cup_car.c **** 		else
+  92:../Sources/cup_car.c **** 			t--;
+ 328              		.loc 1 92 0
+ 329 0034 7B68     		ldr	r3, [r7, #4]
+ 330 0036 013B     		sub	r3, r3, #1
+ 331 0038 7B60     		str	r3, [r7, #4]
+ 332              	.L23:
+  93:../Sources/cup_car.c **** 		
+  94:../Sources/cup_car.c **** 		 TFC_SetBatteryLED_Level(t);
+ 333              		.loc 1 94 0
+ 334 003a 7B68     		ldr	r3, [r7, #4]
+ 335 003c DBB2     		uxtb	r3, r3
+ 336 003e 181C     		mov	r0, r3
+ 337 0040 FFF7FEFF 		bl	TFC_SetBatteryLED_Level
+  95:../Sources/cup_car.c **** 		
+  96:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 338              		.loc 1 96 0
+ 339 0044 0023     		mov	r3, #0
+ 340 0046 FB60     		str	r3, [r7, #12]
+ 341 0048 10E0     		b	.L24
+ 342              	.L25:
+  97:../Sources/cup_car.c **** 		 {
+  98:../Sources/cup_car.c **** 				 TERMINAL_PRINTF("%X,",LineScanImage0[i]);
+ 343              		.loc 1 98 0
+ 344 004a 294B     		ldr	r3, .L30+8
+ 345 004c 1A68     		ldr	r2, [r3]
+ 346 004e FB68     		ldr	r3, [r7, #12]
+ 347 0050 5B00     		lsl	r3, r3, #1
+ 348 0052 D318     		add	r3, r2, r3
+ 349 0054 1B88     		ldrh	r3, [r3]
+ 350 0056 9BB2     		uxth	r3, r3
+ 351 0058 2649     		ldr	r1, .L30+12
+ 352 005a 274A     		ldr	r2, .L30+16
+ 353 005c 081C     		mov	r0, r1
+ 354 005e 111C     		mov	r1, r2
+ 355 0060 1A1C     		mov	r2, r3
+ 356 0062 FFF7FEFF 		bl	Qprintf
+  96:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 357              		.loc 1 96 0
+ 358 0066 FB68     		ldr	r3, [r7, #12]
+ 359 0068 0133     		add	r3, r3, #1
+ 360 006a FB60     		str	r3, [r7, #12]
+ 361              	.L24:
+  96:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 362              		.loc 1 96 0 is_stmt 0
+ 363 006c FB68     		ldr	r3, [r7, #12]
+ 364 006e 7F2B     		cmp	r3, #127
+ 365 0070 EBDD     		ble	.L25
+  99:../Sources/cup_car.c **** 		 }
+ 100:../Sources/cup_car.c **** 		
+ 101:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 366              		.loc 1 101 0 is_stmt 1
+ 367 0072 0023     		mov	r3, #0
+ 368 0074 FB60     		str	r3, [r7, #12]
+ 369 0076 30E0     		b	.L26
+ 370              	.L29:
+ 102:../Sources/cup_car.c **** 		 {
+ 103:../Sources/cup_car.c **** 				 TERMINAL_PRINTF("%X",LineScanImage1[i]);
+ 371              		.loc 1 103 0
+ 372 0078 204B     		ldr	r3, .L30+20
+ 373 007a 1A68     		ldr	r2, [r3]
+ 374 007c FB68     		ldr	r3, [r7, #12]
+ 375 007e 5B00     		lsl	r3, r3, #1
+ 376 0080 D318     		add	r3, r2, r3
+ 377 0082 1B88     		ldrh	r3, [r3]
+ 378 0084 9BB2     		uxth	r3, r3
+ 379 0086 1B49     		ldr	r1, .L30+12
+ 380 0088 1D4A     		ldr	r2, .L30+24
+ 381 008a 081C     		mov	r0, r1
+ 382 008c 111C     		mov	r1, r2
+ 383 008e 1A1C     		mov	r2, r3
+ 384 0090 FFF7FEFF 		bl	Qprintf
+ 104:../Sources/cup_car.c **** 				 if(i==127)
+ 385              		.loc 1 104 0
+ 386 0094 FB68     		ldr	r3, [r7, #12]
+ 387 0096 7F2B     		cmp	r3, #127
+ 388 0098 0ED1     		bne	.L27
+ 105:../Sources/cup_car.c **** 					 TERMINAL_PRINTF("\r\n",LineScanImage1[i]);
+ 389              		.loc 1 105 0
+ 390 009a 184B     		ldr	r3, .L30+20
+ 391 009c 1A68     		ldr	r2, [r3]
+ 392 009e FB68     		ldr	r3, [r7, #12]
+ 393 00a0 5B00     		lsl	r3, r3, #1
+ 394 00a2 D318     		add	r3, r2, r3
+ 395 00a4 1B88     		ldrh	r3, [r3]
+ 396 00a6 9BB2     		uxth	r3, r3
+ 397 00a8 1249     		ldr	r1, .L30+12
+ 398 00aa 164A     		ldr	r2, .L30+28
+ 399 00ac 081C     		mov	r0, r1
+ 400 00ae 111C     		mov	r1, r2
+ 401 00b0 1A1C     		mov	r2, r3
+ 402 00b2 FFF7FEFF 		bl	Qprintf
+ 403 00b6 0DE0     		b	.L28
+ 404              	.L27:
+ 106:../Sources/cup_car.c **** 				 else
+ 107:../Sources/cup_car.c **** 					 TERMINAL_PRINTF(",",LineScanImage1[i]);
+ 405              		.loc 1 107 0
+ 406 00b8 104B     		ldr	r3, .L30+20
+ 407 00ba 1A68     		ldr	r2, [r3]
+ 408 00bc FB68     		ldr	r3, [r7, #12]
+ 409 00be 5B00     		lsl	r3, r3, #1
+ 410 00c0 D318     		add	r3, r2, r3
+ 411 00c2 1B88     		ldrh	r3, [r3]
+ 412 00c4 9BB2     		uxth	r3, r3
+ 413 00c6 0B49     		ldr	r1, .L30+12
+ 414 00c8 0F4A     		ldr	r2, .L30+32
+ 415 00ca 081C     		mov	r0, r1
+ 416 00cc 111C     		mov	r1, r2
+ 417 00ce 1A1C     		mov	r2, r3
+ 418 00d0 FFF7FEFF 		bl	Qprintf
+ 419              	.L28:
+ 101:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 420              		.loc 1 101 0
+ 421 00d4 FB68     		ldr	r3, [r7, #12]
+ 422 00d6 0133     		add	r3, r3, #1
+ 423 00d8 FB60     		str	r3, [r7, #12]
+ 424              	.L26:
+ 101:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 425              		.loc 1 101 0 is_stmt 0
+ 426 00da FB68     		ldr	r3, [r7, #12]
+ 427 00dc 7F2B     		cmp	r3, #127
+ 428 00de CBDD     		ble	.L29
+ 429              	.L20:
+ 108:../Sources/cup_car.c **** 		}										
+ 109:../Sources/cup_car.c **** 			
+ 110:../Sources/cup_car.c **** 	}
+ 111:../Sources/cup_car.c **** }
+ 430              		.loc 1 111 0 is_stmt 1
+ 431 00e0 BD46     		mov	sp, r7
+ 432 00e2 04B0     		add	sp, sp, #16
+ 433              		@ sp needed for prologue
+ 434 00e4 80BD     		pop	{r7, pc}
+ 435              	.L31:
+ 436 00e6 C046     		.align	2
+ 437              	.L30:
+ 438 00e8 00000000 		.word	TFC_Ticker
+ 439 00ec 00000000 		.word	LineScanImageReady
+ 440 00f0 00000000 		.word	LineScanImage0
+ 441 00f4 00000000 		.word	SDA_SERIAL_OUTGOING_QUEUE
+ 442 00f8 00000000 		.word	.LC5
+ 443 00fc 00000000 		.word	LineScanImage1
+ 444 0100 04000000 		.word	.LC8
+ 445 0104 08000000 		.word	.LC10
+ 446 0108 0C000000 		.word	.LC12
+ 447              		.cfi_endproc
+ 448              	.LFE4:
+ 450              		.section	.rodata
+ 451 000e 0000     		.align	2
+ 452              	.LC18:
+ 453 0010 4C3A00   		.ascii	"L:\000"
+ 454 0013 00       		.section	.text.procImage,"ax",%progbits
+ 455              		.align	2
+ 456              		.global	procImage
+ 457              		.code	16
+ 458              		.thumb_func
+ 460              	procImage:
+ 461              	.LFB5:
+ 112:../Sources/cup_car.c **** 
+ 113:../Sources/cup_car.c **** uint16_t* procImage(int t, int i)
+ 114:../Sources/cup_car.c **** {
+ 462              		.loc 1 114 0
+ 463              		.cfi_startproc
+ 464 0000 80B5     		push	{r7, lr}
+ 465              	.LCFI14:
+ 466              		.cfi_def_cfa_offset 8
+ 467              		.cfi_offset 7, -8
+ 468              		.cfi_offset 14, -4
+ 469 0002 84B0     		sub	sp, sp, #16
+ 470              	.LCFI15:
+ 471              		.cfi_def_cfa_offset 24
+ 472 0004 00AF     		add	r7, sp, #0
+ 473              	.LCFI16:
+ 474              		.cfi_def_cfa_register 7
+ 475 0006 7860     		str	r0, [r7, #4]
+ 476 0008 3960     		str	r1, [r7]
+ 115:../Sources/cup_car.c **** 	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
+ 477              		.loc 1 115 0
+ 478 000a 3E4B     		ldr	r3, .L43
+ 479 000c 1B68     		ldr	r3, [r3]
+ 480 000e 642B     		cmp	r3, #100
+ 481 0010 00D8     		bhi	.LCB401
+ 482 0012 72E0     		b	.L42	@long jump
+ 483              	.LCB401:
+ 484              		.loc 1 115 0 is_stmt 0
+ 485 0014 3C4B     		ldr	r3, .L43+4
+ 486 0016 1B78     		ldrb	r3, [r3]
+ 487 0018 DBB2     		uxtb	r3, r3
+ 488 001a 012B     		cmp	r3, #1
+ 489 001c 6DD1     		bne	.L42
+ 116:../Sources/cup_car.c **** 	{
+ 117:../Sources/cup_car.c **** 		TFC_Ticker[0] = 0;
+ 490              		.loc 1 117 0 is_stmt 1
+ 491 001e 394B     		ldr	r3, .L43
+ 492 0020 0022     		mov	r2, #0
+ 493 0022 1A60     		str	r2, [r3]
+ 118:../Sources/cup_car.c **** 		LineScanImageReady=0;
+ 494              		.loc 1 118 0
+ 495 0024 384B     		ldr	r3, .L43+4
+ 496 0026 0022     		mov	r2, #0
+ 497 0028 1A70     		strb	r2, [r3]
+ 119:../Sources/cup_car.c **** 		
+ 120:../Sources/cup_car.c **** 		TERMINAL_PRINTF("\r\n");
+ 498              		.loc 1 120 0
+ 499 002a 384A     		ldr	r2, .L43+8
+ 500 002c 384B     		ldr	r3, .L43+12
+ 501 002e 101C     		mov	r0, r2
+ 502 0030 191C     		mov	r1, r3
+ 503 0032 FFF7FEFF 		bl	Qprintf
+ 121:../Sources/cup_car.c **** 		TERMINAL_PRINTF("L:");
+ 504              		.loc 1 121 0
+ 505 0036 354A     		ldr	r2, .L43+8
+ 506 0038 364B     		ldr	r3, .L43+16
+ 507 003a 101C     		mov	r0, r2
+ 508 003c 191C     		mov	r1, r3
+ 509 003e FFF7FEFF 		bl	Qprintf
+ 122:../Sources/cup_car.c **** 		
+ 123:../Sources/cup_car.c **** 		if(t==0)
+ 510              		.loc 1 123 0
+ 511 0042 7B68     		ldr	r3, [r7, #4]
+ 512 0044 002B     		cmp	r3, #0
+ 513 0046 02D1     		bne	.L34
+ 124:../Sources/cup_car.c **** 			t=3;
+ 514              		.loc 1 124 0
+ 515 0048 0323     		mov	r3, #3
+ 516 004a 7B60     		str	r3, [r7, #4]
+ 517 004c 02E0     		b	.L35
+ 518              	.L34:
+ 125:../Sources/cup_car.c **** 		else
+ 126:../Sources/cup_car.c **** 			t--;
+ 519              		.loc 1 126 0
+ 520 004e 7B68     		ldr	r3, [r7, #4]
+ 521 0050 013B     		sub	r3, r3, #1
+ 522 0052 7B60     		str	r3, [r7, #4]
+ 523              	.L35:
+ 127:../Sources/cup_car.c **** 		
+ 128:../Sources/cup_car.c **** 		 TFC_SetBatteryLED_Level(t);
+ 524              		.loc 1 128 0
+ 525 0054 7B68     		ldr	r3, [r7, #4]
+ 526 0056 DBB2     		uxtb	r3, r3
+ 527 0058 181C     		mov	r0, r3
+ 528 005a FFF7FEFF 		bl	TFC_SetBatteryLED_Level
+ 129:../Sources/cup_car.c **** 		
+ 130:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 529              		.loc 1 130 0
+ 530 005e 0023     		mov	r3, #0
+ 531 0060 FB60     		str	r3, [r7, #12]
+ 532 0062 10E0     		b	.L36
+ 533              	.L37:
+ 131:../Sources/cup_car.c **** 		 {
+ 132:../Sources/cup_car.c **** 				 TERMINAL_PRINTF("%X,",LineScanImage0[i]);
+ 534              		.loc 1 132 0
+ 535 0064 2C4B     		ldr	r3, .L43+20
+ 536 0066 1A68     		ldr	r2, [r3]
+ 537 0068 FB68     		ldr	r3, [r7, #12]
+ 538 006a 5B00     		lsl	r3, r3, #1
+ 539 006c D318     		add	r3, r2, r3
+ 540 006e 1B88     		ldrh	r3, [r3]
+ 541 0070 9BB2     		uxth	r3, r3
+ 542 0072 2649     		ldr	r1, .L43+8
+ 543 0074 294A     		ldr	r2, .L43+24
+ 544 0076 081C     		mov	r0, r1
+ 545 0078 111C     		mov	r1, r2
+ 546 007a 1A1C     		mov	r2, r3
+ 547 007c FFF7FEFF 		bl	Qprintf
+ 130:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 548              		.loc 1 130 0
+ 549 0080 FB68     		ldr	r3, [r7, #12]
+ 550 0082 0133     		add	r3, r3, #1
+ 551 0084 FB60     		str	r3, [r7, #12]
+ 552              	.L36:
+ 130:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 553              		.loc 1 130 0 is_stmt 0
+ 554 0086 FB68     		ldr	r3, [r7, #12]
+ 555 0088 7F2B     		cmp	r3, #127
+ 556 008a EBDD     		ble	.L37
+ 133:../Sources/cup_car.c **** 		 }
+ 134:../Sources/cup_car.c **** 		
+ 135:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 557              		.loc 1 135 0 is_stmt 1
+ 558 008c 0023     		mov	r3, #0
+ 559 008e FB60     		str	r3, [r7, #12]
+ 560 0090 30E0     		b	.L38
+ 561              	.L41:
+ 136:../Sources/cup_car.c **** 		 {
+ 137:../Sources/cup_car.c **** 				 TERMINAL_PRINTF("%X",LineScanImage1[i]);
+ 562              		.loc 1 137 0
+ 563 0092 234B     		ldr	r3, .L43+28
+ 564 0094 1A68     		ldr	r2, [r3]
+ 565 0096 FB68     		ldr	r3, [r7, #12]
+ 566 0098 5B00     		lsl	r3, r3, #1
+ 567 009a D318     		add	r3, r2, r3
+ 568 009c 1B88     		ldrh	r3, [r3]
+ 569 009e 9BB2     		uxth	r3, r3
+ 570 00a0 1A49     		ldr	r1, .L43+8
+ 571 00a2 204A     		ldr	r2, .L43+32
+ 572 00a4 081C     		mov	r0, r1
+ 573 00a6 111C     		mov	r1, r2
+ 574 00a8 1A1C     		mov	r2, r3
+ 575 00aa FFF7FEFF 		bl	Qprintf
+ 138:../Sources/cup_car.c **** 				 if(i==127)
+ 576              		.loc 1 138 0
+ 577 00ae FB68     		ldr	r3, [r7, #12]
+ 578 00b0 7F2B     		cmp	r3, #127
+ 579 00b2 0ED1     		bne	.L39
+ 139:../Sources/cup_car.c **** 					 TERMINAL_PRINTF("\r\n",LineScanImage1[i]);
+ 580              		.loc 1 139 0
+ 581 00b4 1A4B     		ldr	r3, .L43+28
+ 582 00b6 1A68     		ldr	r2, [r3]
+ 583 00b8 FB68     		ldr	r3, [r7, #12]
+ 584 00ba 5B00     		lsl	r3, r3, #1
+ 585 00bc D318     		add	r3, r2, r3
+ 586 00be 1B88     		ldrh	r3, [r3]
+ 587 00c0 9BB2     		uxth	r3, r3
+ 588 00c2 1249     		ldr	r1, .L43+8
+ 589 00c4 124A     		ldr	r2, .L43+12
+ 590 00c6 081C     		mov	r0, r1
+ 591 00c8 111C     		mov	r1, r2
+ 592 00ca 1A1C     		mov	r2, r3
+ 593 00cc FFF7FEFF 		bl	Qprintf
+ 594 00d0 0DE0     		b	.L40
+ 595              	.L39:
+ 140:../Sources/cup_car.c **** 				 else
+ 141:../Sources/cup_car.c **** 					 TERMINAL_PRINTF(",",LineScanImage1[i]);
+ 596              		.loc 1 141 0
+ 597 00d2 134B     		ldr	r3, .L43+28
+ 598 00d4 1A68     		ldr	r2, [r3]
+ 599 00d6 FB68     		ldr	r3, [r7, #12]
+ 600 00d8 5B00     		lsl	r3, r3, #1
+ 601 00da D318     		add	r3, r2, r3
+ 602 00dc 1B88     		ldrh	r3, [r3]
+ 603 00de 9BB2     		uxth	r3, r3
+ 604 00e0 0A49     		ldr	r1, .L43+8
+ 605 00e2 114A     		ldr	r2, .L43+36
+ 606 00e4 081C     		mov	r0, r1
+ 607 00e6 111C     		mov	r1, r2
+ 608 00e8 1A1C     		mov	r2, r3
+ 609 00ea FFF7FEFF 		bl	Qprintf
+ 610              	.L40:
+ 135:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 611              		.loc 1 135 0
+ 612 00ee FB68     		ldr	r3, [r7, #12]
+ 613 00f0 0133     		add	r3, r3, #1
+ 614 00f2 FB60     		str	r3, [r7, #12]
+ 615              	.L38:
+ 135:../Sources/cup_car.c **** 		 for(i=0;i<128;i++)
+ 616              		.loc 1 135 0 is_stmt 0
+ 617 00f4 FB68     		ldr	r3, [r7, #12]
+ 618 00f6 7F2B     		cmp	r3, #127
+ 619 00f8 CBDD     		ble	.L41
+ 620              	.L42:
+ 142:../Sources/cup_car.c **** 		}
+ 143:../Sources/cup_car.c **** 	}
+ 144:../Sources/cup_car.c **** }
+ 621              		.loc 1 144 0 is_stmt 1
+ 622 00fa 181C     		mov	r0, r3
+ 623 00fc BD46     		mov	sp, r7
+ 624 00fe 04B0     		add	sp, sp, #16
+ 625              		@ sp needed for prologue
+ 626 0100 80BD     		pop	{r7, pc}
+ 627              	.L44:
+ 628 0102 C046     		.align	2
+ 629              	.L43:
+ 630 0104 00000000 		.word	TFC_Ticker
+ 631 0108 00000000 		.word	LineScanImageReady
+ 632 010c 00000000 		.word	SDA_SERIAL_OUTGOING_QUEUE
+ 633 0110 08000000 		.word	.LC10
+ 634 0114 10000000 		.word	.LC18
+ 635 0118 00000000 		.word	LineScanImage0
+ 636 011c 00000000 		.word	.LC5
+ 637 0120 00000000 		.word	LineScanImage1
+ 638 0124 04000000 		.word	.LC8
+ 639 0128 0C000000 		.word	.LC12
+ 640              		.cfi_endproc
+ 641              	.LFE5:
+ 643              		.text
+ 644              	.Letext0:
+ 645              		.file 2 "C:/Freescale/CW MCU v10.7/MCU/ARM_GCC_Support/ewl/EWL_C/include/cstdint"
+ 646              		.file 3 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/MKL25Z4.h"
+ 647              		.file 4 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/TFC\\TFC_Queue.h"
+ 648              		.file 5 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/TFC\\TFC_ARM_SysTick.h"
+ 649              		.file 6 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/TFC\\TFC_LineScanCamera.h"
+ 650              		.file 7 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/TFC\\TFC_UART.h"
+ 651              		.file 8 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/cup_car.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 cup_car.c
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:18     .text.DriveT:00000000 $t
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:23     .text.DriveT:00000000 DriveT
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:69     .text.DriveT:00000034 $d
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:74     .text.Drive:00000000 $t
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:79     .text.Drive:00000000 Drive
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:114    .text.Drive:00000024 $d
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:119    .text.Stop:00000000 $t
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:124    .text.Stop:00000000 Stop
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:154    .text.Stop:0000001c $d
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:159    .text.Steer:00000000 $t
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:164    .text.Steer:00000000 Steer
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:194    .rodata.Steer:00000000 $d
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:258    .text.Steer:00000070 $d
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:265    .rodata:00000000 $d
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:278    .text.printLineScanData:00000000 $t
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:283    .text.printLineScanData:00000000 printLineScanData
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:438    .text.printLineScanData:000000e8 $d
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:455    .text.procImage:00000000 $t
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:460    .text.procImage:00000000 procImage
+C:\Users\Josh\AppData\Local\Temp\cc3902sY.s:630    .text.procImage:00000104 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+TFC_SetMotorPWM
+TFC_Delay_mS
+TFC_SetServo
+TFC_SetBatteryLED_Level
+Qprintf
+TFC_Ticker
+LineScanImageReady
+LineScanImage0
+SDA_SERIAL_OUTGOING_QUEUE
+LineScanImage1
