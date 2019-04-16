@@ -1556,17 +1556,17 @@
  1272 0004 FFF7FEFF 		bl	TFC_Init
  268:../Sources/main.c **** 	t = 0;
  1273              		.loc 1 268 0
- 1274 0008 224B     		ldr	r3, .L92
+ 1274 0008 374B     		ldr	r3, .L92
  1275 000a 0022     		mov	r2, #0
  1276 000c 1A60     		str	r2, [r3]
  269:../Sources/main.c **** 	i = 0;
  1277              		.loc 1 269 0
- 1278 000e 224B     		ldr	r3, .L92+4
+ 1278 000e 374B     		ldr	r3, .L92+4
  1279 0010 0022     		mov	r2, #0
  1280 0012 1A60     		str	r2, [r3]
  270:../Sources/main.c **** 	TFC_Ticker[3] = 0;
  1281              		.loc 1 270 0
- 1282 0014 214B     		ldr	r3, .L92+8
+ 1282 0014 364B     		ldr	r3, .L92+8
  1283 0016 0022     		mov	r2, #0
  1284 0018 DA60     		str	r2, [r3, #12]
  271:../Sources/main.c **** 	while (!(TFC_PUSH_BUTTON_0_PRESSED))
@@ -1582,19 +1582,19 @@
  1292 0020 C046     		mov	r8, r8
  1293              	.L80:
  1294              		.loc 1 273 0 is_stmt 0
- 1295 0022 1E4B     		ldr	r3, .L92+8
+ 1295 0022 334B     		ldr	r3, .L92+8
  1296 0024 DA68     		ldr	r2, [r3, #12]
- 1297 0026 1E4B     		ldr	r3, .L92+12
+ 1297 0026 334B     		ldr	r3, .L92+12
  1298 0028 9A42     		cmp	r2, r3
  1299 002a F7D9     		bls	.L88
  274:../Sources/main.c **** 		TFC_Ticker[3] = 0;
  1300              		.loc 1 274 0 is_stmt 1
- 1301 002c 1B4B     		ldr	r3, .L92+8
+ 1301 002c 304B     		ldr	r3, .L92+8
  1302 002e 0022     		mov	r2, #0
  1303 0030 DA60     		str	r2, [r3, #12]
  275:../Sources/main.c **** 		TFC_BAT_LED0_ON;
  1304              		.loc 1 275 0
- 1305 0032 1C4B     		ldr	r3, .L92+16
+ 1305 0032 314B     		ldr	r3, .L92+16
  1306 0034 8022     		mov	r2, #128
  1307 0036 5200     		lsl	r2, r2, #1
  1308 0038 5A60     		str	r2, [r3, #4]
@@ -1606,26 +1606,26 @@
  1313 003e C046     		mov	r8, r8
  1314              	.L82:
  1315              		.loc 1 276 0 is_stmt 0
- 1316 0040 164B     		ldr	r3, .L92+8
+ 1316 0040 2B4B     		ldr	r3, .L92+8
  1317 0042 DA68     		ldr	r2, [r3, #12]
- 1318 0044 164B     		ldr	r3, .L92+12
+ 1318 0044 2B4B     		ldr	r3, .L92+12
  1319 0046 9A42     		cmp	r2, r3
  1320 0048 F9D9     		bls	.L89
  277:../Sources/main.c **** 		TFC_Ticker[3] = 0;
  1321              		.loc 1 277 0 is_stmt 1
- 1322 004a 144B     		ldr	r3, .L92+8
+ 1322 004a 294B     		ldr	r3, .L92+8
  1323 004c 0022     		mov	r2, #0
  1324 004e DA60     		str	r2, [r3, #12]
  278:../Sources/main.c **** 		TFC_BAT_LED0_OFF;
  1325              		.loc 1 278 0
- 1326 0050 144B     		ldr	r3, .L92+16
+ 1326 0050 294B     		ldr	r3, .L92+16
  1327 0052 8022     		mov	r2, #128
  1328 0054 5200     		lsl	r2, r2, #1
  1329 0056 9A60     		str	r2, [r3, #8]
  1330              	.L79:
  271:../Sources/main.c **** 	while (!(TFC_PUSH_BUTTON_0_PRESSED))
  1331              		.loc 1 271 0
- 1332 0058 134B     		ldr	r3, .L92+20
+ 1332 0058 284B     		ldr	r3, .L92+20
  1333 005a 1A69     		ldr	r2, [r3, #16]
  1334 005c 8023     		mov	r3, #128
  1335 005e 9B01     		lsl	r3, r3, #6
@@ -1634,7 +1634,7 @@
  279:../Sources/main.c **** 	}
  280:../Sources/main.c **** 	TFC_Ticker[3] = 0;
  1338              		.loc 1 280 0
- 1339 0064 0D4B     		ldr	r3, .L92+8
+ 1339 0064 224B     		ldr	r3, .L92+8
  1340 0066 0022     		mov	r2, #0
  1341 0068 DA60     		str	r2, [r3, #12]
  281:../Sources/main.c **** 	while (TFC_Ticker[3]<2000) continue;		//wait 2 seconds p button push
@@ -1645,9 +1645,9 @@
  1346 006e C046     		mov	r8, r8
  1347              	.L85:
  1348              		.loc 1 281 0 is_stmt 0
- 1349 0070 0A4B     		ldr	r3, .L92+8
+ 1349 0070 1F4B     		ldr	r3, .L92+8
  1350 0072 DA68     		ldr	r2, [r3, #12]
- 1351 0074 0D4B     		ldr	r3, .L92+24
+ 1351 0074 224B     		ldr	r3, .L92+24
  1352 0076 9A42     		cmp	r2, r3
  1353 0078 F9D9     		bls	.L91
  1354              	.L87:
@@ -1661,51 +1661,94 @@
  287:../Sources/main.c **** //		demo();
  288:../Sources/main.c **** 		printLineScanData(t, i);
  1357              		.loc 1 288 0
- 1358 007e 054B     		ldr	r3, .L92
+ 1358 007e 1A4B     		ldr	r3, .L92
  1359 0080 1B68     		ldr	r3, [r3]
  1360 0082 1A1C     		mov	r2, r3
- 1361 0084 044B     		ldr	r3, .L92+4
+ 1361 0084 194B     		ldr	r3, .L92+4
  1362 0086 1B68     		ldr	r3, [r3]
  1363 0088 101C     		mov	r0, r2
  1364 008a 191C     		mov	r1, r3
  1365 008c FFF7FEFF 		bl	printLineScanData
- 289:../Sources/main.c **** //		Steer(LEFT, 0.5);
- 290:../Sources/main.c **** //		TFC_Delay_mS(1000);
- 291:../Sources/main.c **** //		Steer(CENTER, 0);
- 292:../Sources/main.c **** //		TFC_Delay_mS(1000);
- 293:../Sources/main.c **** //		Steer(RIGHT, 0.5);
- 294:../Sources/main.c **** //		TFC_Delay_mS(1000);
- 295:../Sources/main.c **** //		Steer(CENTER, 0);
- 296:../Sources/main.c **** //		TFC_Delay_mS(1000);
+ 289:../Sources/main.c **** 		Steer(LEFT, 0.5);
+ 1366              		.loc 1 289 0
+ 1367 0090 FC23     		mov	r3, #252
+ 1368 0092 9B05     		lsl	r3, r3, #22
+ 1369 0094 0220     		mov	r0, #2
+ 1370 0096 191C     		add	r1, r3, #0
+ 1371 0098 FFF7FEFF 		bl	Steer
+ 290:../Sources/main.c **** 		TFC_Delay_mS(1000);
+ 1372              		.loc 1 290 0
+ 1373 009c FA23     		mov	r3, #250
+ 1374 009e 9B00     		lsl	r3, r3, #2
+ 1375 00a0 181C     		mov	r0, r3
+ 1376 00a2 FFF7FEFF 		bl	TFC_Delay_mS
+ 291:../Sources/main.c **** 		Steer(CENTER, 0);
+ 1377              		.loc 1 291 0
+ 1378 00a6 0023     		mov	r3, #0
+ 1379 00a8 0120     		mov	r0, #1
+ 1380 00aa 191C     		add	r1, r3, #0
+ 1381 00ac FFF7FEFF 		bl	Steer
+ 292:../Sources/main.c **** 		TFC_Delay_mS(1000);
+ 1382              		.loc 1 292 0
+ 1383 00b0 FA23     		mov	r3, #250
+ 1384 00b2 9B00     		lsl	r3, r3, #2
+ 1385 00b4 181C     		mov	r0, r3
+ 1386 00b6 FFF7FEFF 		bl	TFC_Delay_mS
+ 293:../Sources/main.c **** 		Steer(RIGHT, 0.5);
+ 1387              		.loc 1 293 0
+ 1388 00ba FC23     		mov	r3, #252
+ 1389 00bc 9B05     		lsl	r3, r3, #22
+ 1390 00be 0420     		mov	r0, #4
+ 1391 00c0 191C     		add	r1, r3, #0
+ 1392 00c2 FFF7FEFF 		bl	Steer
+ 294:../Sources/main.c **** 		TFC_Delay_mS(1000);
+ 1393              		.loc 1 294 0
+ 1394 00c6 FA23     		mov	r3, #250
+ 1395 00c8 9B00     		lsl	r3, r3, #2
+ 1396 00ca 181C     		mov	r0, r3
+ 1397 00cc FFF7FEFF 		bl	TFC_Delay_mS
+ 295:../Sources/main.c **** 		Steer(CENTER, 0);
+ 1398              		.loc 1 295 0
+ 1399 00d0 0023     		mov	r3, #0
+ 1400 00d2 0120     		mov	r0, #1
+ 1401 00d4 191C     		add	r1, r3, #0
+ 1402 00d6 FFF7FEFF 		bl	Steer
+ 296:../Sources/main.c **** 		TFC_Delay_mS(1000);
+ 1403              		.loc 1 296 0
+ 1404 00da FA23     		mov	r3, #250
+ 1405 00dc 9B00     		lsl	r3, r3, #2
+ 1406 00de 181C     		mov	r0, r3
+ 1407 00e0 FFF7FEFF 		bl	TFC_Delay_mS
  297:../Sources/main.c **** 	}
- 1366              		.loc 1 297 0
- 1367 0090 F3E7     		b	.L87
- 1368              	.L93:
- 1369 0092 C046     		.align	2
- 1370              	.L92:
- 1371 0094 00000000 		.word	t
- 1372 0098 00000000 		.word	i
- 1373 009c 00000000 		.word	TFC_Ticker
- 1374 00a0 E7030000 		.word	999
- 1375 00a4 40F00F40 		.word	1074786368
- 1376 00a8 80F00F40 		.word	1074786432
- 1377 00ac CF070000 		.word	1999
- 1378              		.cfi_endproc
- 1379              	.LFE2:
- 1381              		.text
- 1382              	.Letext0:
- 1383              		.file 2 "C:/Freescale/CW MCU v10.7/MCU/ARM_GCC_Support/ewl/EWL_C/include/cstdint"
- 1384              		.file 3 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/MKL25Z4.h"
- 1385              		.file 4 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/TFC\\TFC_Queue.h"
- 1386              		.file 5 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/TFC\\TFC_ARM_SysTick.h"
- 1387              		.file 6 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/TFC\\TFC_LineScanCamera.h"
- 1388              		.file 7 "C:/Users/Josh/workspace/FRDM-TFC/Project_Headers/TFC\\TFC_UART.h"
+ 1408              		.loc 1 297 0
+ 1409 00e4 C9E7     		b	.L87
+ 1410              	.L93:
+ 1411 00e6 C046     		.align	2
+ 1412              	.L92:
+ 1413 00e8 00000000 		.word	t
+ 1414 00ec 00000000 		.word	i
+ 1415 00f0 00000000 		.word	TFC_Ticker
+ 1416 00f4 E7030000 		.word	999
+ 1417 00f8 40F00F40 		.word	1074786368
+ 1418 00fc 80F00F40 		.word	1074786432
+ 1419 0100 CF070000 		.word	1999
+ 1420              		.cfi_endproc
+ 1421              	.LFE2:
+ 1423              		.text
+ 1424              	.Letext0:
+ 1425              		.file 2 "C:/Freescale/CW MCU v10.7/MCU/ARM_GCC_Support/ewl/EWL_C/include/cstdint"
+ 1426              		.file 3 "C:/Users/Josh/Programming/Projects/codewarrior/FRDM-TFC/Project_Headers/MKL25Z4.h"
+ 1427              		.file 4 "C:/Users/Josh/Programming/Projects/codewarrior/FRDM-TFC/Project_Headers/TFC\\TFC_Queue.h"
+ 1428              		.file 5 "C:/Users/Josh/Programming/Projects/codewarrior/FRDM-TFC/Project_Headers/TFC\\TFC_ARM_SysT
+ 1429              		.file 6 "C:/Users/Josh/Programming/Projects/codewarrior/FRDM-TFC/Project_Headers/TFC\\TFC_LineScan
+ 1430              		.file 7 "C:/Users/Josh/Programming/Projects/codewarrior/FRDM-TFC/Project_Headers/TFC\\TFC_UART.h"
+ 1431              		.file 8 "C:/Users/Josh/Programming/Projects/codewarrior/FRDM-TFC/Project_Headers/cup_car.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
                             *COM*:00000004 t
                             *COM*:00000004 Delta
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:24     .bss.i:00000000 i
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:21     .bss.i:00000000 $d
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:24     .bss.i:00000000 i
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:21     .bss.i:00000000 $d
                             *COM*:00000100 LineScanTemp
                             *COM*:00000100 LSarray
                             *COM*:00000002 LSavg
@@ -1715,20 +1758,20 @@ C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:21     .bss.i:00000000 $d
                             *COM*:00000002 GoodRedge
                             *COM*:00000002 GoodLedge
                             *COM*:00000004 TmpLSavg
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:36     .rodata:00000000 $d
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:52     .text.demo:00000000 $t
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:57     .text.demo:00000000 demo
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:481    .text.demo:0000029c $d
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:506    .text.exampleEdgeDetect:00000000 $t
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:511    .text.exampleEdgeDetect:00000000 exampleEdgeDetect
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:913    .text.exampleEdgeDetect:00000280 $d
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:932    .text.exampleEdgeDetect:000002c4 $t
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:1232   .text.exampleEdgeDetect:000004bc $d
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:1254   .text.main:00000000 $t
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:1259   .text.main:00000000 main
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:1371   .text.main:00000094 $d
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:36     .rodata:00000000 $d
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:52     .text.demo:00000000 $t
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:57     .text.demo:00000000 demo
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:481    .text.demo:0000029c $d
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:506    .text.exampleEdgeDetect:00000000 $t
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:511    .text.exampleEdgeDetect:00000000 exampleEdgeDetect
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:913    .text.exampleEdgeDetect:00000280 $d
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:932    .text.exampleEdgeDetect:000002c4 $t
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:1232   .text.exampleEdgeDetect:000004bc $d
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:1254   .text.main:00000000 $t
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:1259   .text.main:00000000 main
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:1413   .text.main:000000e8 $d
                      .debug_frame:00000010 $d
-C:\Users\Josh\AppData\Local\Temp\ccpyMl8h.s:1253   .text.exampleEdgeDetect:00000504 $t
+C:\Users\Josh\AppData\Local\Temp\ccsRjcgX.s:1253   .text.exampleEdgeDetect:00000504 $t
 
 UNDEFINED SYMBOLS
 TFC_GetDIP_Switch
@@ -1752,3 +1795,5 @@ Drive
 TFC_Init
 TFC_Task
 printLineScanData
+Steer
+TFC_Delay_mS

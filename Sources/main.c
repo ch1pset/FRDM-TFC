@@ -286,14 +286,14 @@ int main(void)
 //		exampleEdgeDetect();
 //		demo();
 		printLineScanData(t, i);
-//		Steer(LEFT, 0.5);
-//		TFC_Delay_mS(1000);
-//		Steer(CENTER, 0);
-//		TFC_Delay_mS(1000);
-//		Steer(RIGHT, 0.5);
-//		TFC_Delay_mS(1000);
-//		Steer(CENTER, 0);
-//		TFC_Delay_mS(1000);
+		Steer(LEFT, 0.5);
+		TFC_Delay_mS(1000);
+		Steer(CENTER, 0);
+		TFC_Delay_mS(1000);
+		Steer(RIGHT, 0.5);
+		TFC_Delay_mS(1000);
+		Steer(CENTER, 0);
+		TFC_Delay_mS(1000);
 	}
 	
 	return 0;
