@@ -28,7 +28,7 @@ void Stop();
 
 void printLineScanData(int t, int i);
 
-uint16_t* procImage(int t,int i);
+void procImage(int t,int i);
 
 
 #endif /* CUP_CAR_H_ */

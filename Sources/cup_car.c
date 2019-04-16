@@ -90,55 +90,41 @@ void printLineScanData(int t, int i)
 			t=3;
 		else
 			t--;
+		TFC_SetBatteryLED_Level(t);
 		
-		 TFC_SetBatteryLED_Level(t);
-		
-		 for(i=0;i<128;i++)
-		 {
-				 TERMINAL_PRINTF("%X,",LineScanImage0[i]);
-		 }
-		
-		 for(i=0;i<128;i++)
-		 {
-				 TERMINAL_PRINTF("%X",LineScanImage1[i]);
-				 if(i==127)
-					 TERMINAL_PRINTF("\r\n",LineScanImage1[i]);
-				 else
-					 TERMINAL_PRINTF(",",LineScanImage1[i]);
-		}										
-			
+		for(i=0;i<128;i++)
+		{
+			 TERMINAL_PRINTF("%X,",LineScanImage0[i]);
+		}
+		TERMINAL_PRINTF("\r");
 	}
 }
 
-uint16_t* procImage(int t, int i)
+void procImage(int t, int i)
 {
+	int output[128];
+	int sobel[5] = {1,2,0,-2,-1};
+	int j;
+
+	memset(output, 0, sizeof(output));
+	
 	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
 	{
 		TFC_Ticker[0] = 0;
 		LineScanImageReady=0;
-		
-		TERMINAL_PRINTF("\r\n");
-		TERMINAL_PRINTF("L:");
-		
 		if(t==0)
 			t=3;
 		else
 			t--;
-		
 		 TFC_SetBatteryLED_Level(t);
-		
-		 for(i=0;i<128;i++)
+		 for(i=2;i<125;i++)
 		 {
-				 TERMINAL_PRINTF("%X,",LineScanImage0[i]);
+			 for(j = 0; j < 5; j++)
+			 {
+				 output[i] += sobel[j] * (int)LineScanImage0[i + j - 2];
+			 }
+			 TERMINAL_PRINTF("%X,", output[i]);
 		 }
-		
-		 for(i=0;i<128;i++)
-		 {
-				 TERMINAL_PRINTF("%X",LineScanImage1[i]);
-				 if(i==127)
-					 TERMINAL_PRINTF("\r\n",LineScanImage1[i]);
-				 else
-					 TERMINAL_PRINTF(",",LineScanImage1[i]);
-		}
+		TERMINAL_PRINTF("\r");
 	}
 }

@@ -283,17 +283,16 @@ int main(void)
 	for(;;)
 	{
 		TFC_Task();
-//		exampleEdgeDetect();
-//		demo();
-		printLineScanData(t, i);
-		Steer(LEFT, 0.5);
-		TFC_Delay_mS(1000);
-		Steer(CENTER, 0);
-		TFC_Delay_mS(1000);
-		Steer(RIGHT, 0.5);
-		TFC_Delay_mS(1000);
-		Steer(CENTER, 0);
-		TFC_Delay_mS(1000);
+		procImage(t, i);
+		TFC_Delay_mS(40);
+//		Steer(LEFT, 0.5);
+//		TFC_Delay_mS(1000);
+//		Steer(CENTER, 0);
+//		TFC_Delay_mS(1000);
+//		Steer(RIGHT, 0.5);
+//		TFC_Delay_mS(1000);
+//		Steer(CENTER, 0);
+//		TFC_Delay_mS(1000);
 	}
 	
 	return 0;
