@@ -2,9 +2,7 @@
 #include "TFC\TFC.h"
 #include "cup_car.h"
 
-uint32_t t, Delta, i=0;
-uint16_t  LineScanTemp[128],LSarray[128], LSavg, Ledge, Redge, Center, GoodRedge, GoodLedge;
-float	TmpLSavg;
+uint32_t t, i=0;
 
 void demo()
 {
@@ -127,172 +125,43 @@ void demo()
 	
 }
 
-
-void exampleEdgeDetect()
+void toggleLED(uint8 mode, unsigned int msHold)
 {
-	
-	TFC_SetServo(0,0.0);						//center wheels
-	Drive(0.3);	
-	
-	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
+	switch(mode)
 	{
-		TFC_Ticker[0] = 0;
-		LineScanImageReady=0;
-		
-		
-		//  Here is the line scan processing for black line detection Method #2
-		LSavg = 0;
-		TmpLSavg = 0.0;
-		
-		for(i=0;i<128;i++)   //first save the line to the temp file
-		{
-			LineScanTemp[i] = LineScanImage0[i];
-			LSarray[i] = LineScanTemp[i];
-		}
-		for(i=0;i<128;i++)  // Now get the average
-		{
-			TmpLSavg += LineScanTemp[i];
-		}
-		LSavg = (uint16_t) ((TmpLSavg / 128.0)*.8) ;
-		//TERMINAL_PRINTF("Average = %X,", LSavg);					 
-		for(i=0;i<128;i++)
-		{	 
-			if (LineScanTemp[i] >= LSavg)   //this turns the line scan into only 2000 or 50 values and shifts the avg down by 20 for a 1
-				LSarray[i] = 2000;
-			else
-				LSarray[i] = 50;
-		}	 
-		
-		//  Determine edge detection
-		// Start from middle +/- 20-30 or so and search both ways  Only require a single point dip for line
-		Ledge = 70 ;  //dont change these with out changing if statements !!!
-		Redge = 56 ;
-		for (i=84; i > 4 ;i--)
-		{ 
-			if ((LineScanTemp[i]-LineScanTemp[i-1]) > 400)
-			{
-				Ledge = i;        // This is the first edge to the left
-				break;
-			}
-		
-		
-		
-		}
-		
-		GoodLedge = 0;
-		for (i=Ledge; i>=4; i--)
-		{
-			if ((LSarray[i] == 2000 )&&(LSarray[i-1] == 2000))  //need two points of white
-			{
-				GoodLedge = 1;
-				break;
-			}
-		}
-		
-		//  Now look for the Right edge
-		
-		for (i=44;i<124;i++)
-		{
-			if ((LineScanTemp[i]-LineScanTemp[i+1]) > 400)
-			{
-				Redge = i;
-				break;
-			}
-		}
-		//  Now check for white space after edge
-		GoodRedge = 0;
-		for (i=Redge;i<124;i++)
-		{
-			if ((LSarray[i] == 2000 )&&(LSarray[i+1] == 2000))  //need two points of white
-			{
-				GoodRedge = 1;
-				break;
-			}
-		}
-		
-		
-		// Now set the 2 edges in LSarray so we can see them
-		LSarray[Redge] = 3500;
-		LSarray[Ledge] = 2500;
-		LSarray[127-GoodRedge] = 400;
-		LSarray[GoodLedge] = 200;					 
-		
-		//Calculate distance between lines
-		Delta = Redge-Ledge;
-		LSarray[Delta] += 150;
-		//calculate center
-		Center = Ledge + ((Redge - Ledge)/2);
-		if (Ledge <= 5)  Center = Redge - 40;
-		if (Redge >=123)  Center = Ledge + 40;
-		LSarray[Center] = 4000;
-		
-		if(t==0)
-			t=3;
-		else
-			t--;
-		
-		 TFC_SetBatteryLED_Level(t);					 
-		 TERMINAL_PRINTF("\r\n");
-		 TERMINAL_PRINTF("L:");						
-		 for(i=0;i<128;i++)
-		 {
-				 TERMINAL_PRINTF("%X,",LineScanTemp[i]);
-		 }
-		
-		 for(i=0;i<128;i++)
-		 {
-				 TERMINAL_PRINTF("%X",LSarray[i]);
-				 if(i==127)
-					 TERMINAL_PRINTF("\r\n",LSarray[i]);
-				 else
-					 TERMINAL_PRINTF(",",LSarray[i]);
-		}										
-			
+	case 0:
+		TFC_BAT_LED0_OFF;
+		break;
+	case 1:
+		TFC_BAT_LED0_ON;
+		break;
 	}
-		
-	//now make adjustment in steering
-	if((Center >= 60) && (Center <= 68)) {
-		TFC_SetServo(0,0.0);						//center wheels
-	}
-	else if (Center <62 ){
-		TFC_SetServo(0,-.5);						//turn left
-	}
-	else if (Center >66 ){
-		TFC_SetServo(0,+.5);						//turn right
-	}
+	TFC_Delay_mS(msHold);
 }
 
+int offset = 0;
 int main(void)
 {
 	TFC_Init();
 	t = 0;
 	i = 0;
-	TFC_Ticker[3] = 0;
+	Stop();
 	while (!(TFC_PUSH_BUTTON_0_PRESSED))
 	{ 	
-		while (TFC_Ticker[3]<1000) continue;
-		TFC_Ticker[3] = 0;
-		TFC_BAT_LED0_ON;
-		while (TFC_Ticker[3]<1000) continue;
-		TFC_Ticker[3] = 0;
-		TFC_BAT_LED0_OFF;
+		toggleLED(1, 500);
+		toggleLED(0, 500);
 	}
-	TFC_Ticker[3] = 0;
-	while (TFC_Ticker[3]<2000) continue;		//wait 2 seconds p button push
-	
+	TFC_Delay_mS(1000);
+	int s = 0;
 	for(;;)
 	{
 		TFC_Task();
-		procImage(t, i);
-		TFC_Delay_mS(40);
-//		Steer(LEFT, 0.5);
-//		TFC_Delay_mS(1000);
-//		Steer(CENTER, 0);
-//		TFC_Delay_mS(1000);
-//		Steer(RIGHT, 0.5);
-//		TFC_Delay_mS(1000);
-//		Steer(CENTER, 0);
-//		TFC_Delay_mS(1000);
+		switch((TFC_GetDIP_Switch()>>1)&0x03)
+		{
+			case 1: offset = procImage(offset); break;
+			case 2: s = avgImage(i,s); break;
+			default: printLineScanData(i); break;
+		}
 	}
 	
 	return 0;
