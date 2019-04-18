@@ -22,7 +22,6 @@ typedef enum DIRECTION
 
 typedef int img[128];
 
-
 void Drive(float strength);
 void DriveT(int delayMS, float strength);
 void Steer(DIR d, float strength);
@@ -30,7 +29,7 @@ int pidSteerControl(int center, int e_pos[2], int pOffset);
 void Stop();
 
 void printLineScanData(int i);
-int procImage(int pOffset);
+int procImage(int pOffset, int pImage[128]);
 int avgImage(int i, int s);
 
 #endif /* CUP_CAR_H_ */

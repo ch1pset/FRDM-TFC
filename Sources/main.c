@@ -140,6 +140,8 @@ void toggleLED(uint8 mode, unsigned int msHold)
 }
 
 int offset = 0;
+int image[128];
+int driving = 0;
 int main(void)
 {
 	TFC_Init();
@@ -156,9 +158,23 @@ int main(void)
 	for(;;)
 	{
 		TFC_Task();
+		if(TFC_PUSH_BUTTON_1_PRESSED) 
+		{
+			if(driving)
+			{
+				driving = 0;
+				Stop();
+			}
+			else
+			{
+				driving = 1;
+			}
+			TFC_Delay_mS(500);
+		}
+		if(driving) Drive(TFC_ReadPot(0));
 		switch((TFC_GetDIP_Switch()>>1)&0x03)
 		{
-			case 1: offset = procImage(offset); break;
+			case 1: offset = procImage(offset, image); break;
 			case 2: s = avgImage(i,s); break;
 			default: printLineScanData(i); break;
 		}

@@ -56,7 +56,7 @@ void Steer(DIR d, float strength)
 
 void printLineScanData(int i)
 {
-	if(TFC_Ticker[0]>50 && LineScanImageReady==1)
+	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
 	{
 		TFC_Ticker[0] = 0;
 		LineScanImageReady=0;
@@ -69,16 +69,17 @@ void printLineScanData(int i)
 	}
 }
 
-int procImage(int pOffset)
+int procImage(int pOffset, int pImage[128])
 {
 	int output[128];
+	int tmpImg[128];
 	int sobel[5] = {-1,-2,0,2,1};
 	int j;
 	int i;
+	int peak[2] = {0,127};
 	int edge[2] = {0,0};
 	int e_pos[2] = {5,123};
 	int center = 63;
-	memset(output, 0, sizeof(output));
 	
 	if(TFC_Ticker[0]>50 && LineScanImageReady==1)
 	{
@@ -90,29 +91,36 @@ int procImage(int pOffset)
 			output[i] = 0;
 			if(i >= 5 || i <= 123)
 			{
-				for(j = 0; j < 5; j++)
-					output[i] += sobel[j] * LineScanImage0[i + j - 2];
+//				for(j = 0; j < 5; j++)
+//					output[i] += sobel[j] * (int)(0 | LineScanImage0[i + j - 2]);
 
-//				output[i] = LineScanImage0[i+1] - LineScanImage0[i];	//calc differnce(1st derivative)
+				output[i] |=  (LineScanImage0[i+1] - LineScanImage0[i]);	//calc differnce(1st derivative)
 				
-				if(output[i] > 5000) output[i] = 0;		//set max value
-				if(output[i] < -5000) output[i] = 0;	//set min value
-				if(output[i] <= 512 && output[i] >= -512) output[i] = 0;	//reduce low dB noise and false edges
+				if(output[i] > 1000) output[i] = 0;		//set max value
+				if(output[i] < -1000) output[i] = 0;	//set min value
+//				if(output[i] <= 32 && output[i] >= -32) output[i] = 0;	//reduce low dB noise and false edges
 				
-				if(output[i] > edge[0] && output[i] > 1000) //arbitrary threshold of 1000
+				tmpImg[i] = output[i];
+				output[i] = (output[i] + pImage[i]) / 2;
+				pImage[i] = tmpImg[i];
+				
+//				output[i] *= 10;
+				if(output[i] > edge[0] && output[i] > 125) //arbitrary threshold of 1000
 				{
 					edge[0] = output[i];
 					e_pos[0] = i;
 				}
-				if(output[i] < edge[1] && output[i] < 500) 
+				if(output[i] < edge[1] && output[i] < -125) 
 				{
 					edge[1] = output[i];
 					e_pos[1] = i;
 				}
+				if(e_pos[1] < e_pos[0]) e_pos[1] = e_pos[0];
+				if(e_pos[0] > e_pos[1]) e_pos[0] = e_pos[1];
 			}
-//			TERMINAL_PRINTF("%d,", output[i]);
+			TERMINAL_PRINTF("%d,", output[i]);
 		}
-//		TERMINAL_PRINTF("\n");
+		TERMINAL_PRINTF("\n");
 		return pidSteerControl(center, e_pos, pOffset);
 	}
 	return pOffset;
@@ -122,7 +130,7 @@ int pidSteerControl(int center, int e_pos[2], int pOffset)
 {
 	int offset = center - ((int)((e_pos[0] + e_pos[1])/ 2));
 	int delta = offset - pOffset;
-	TFC_SetServo(0, 1.0 * (offset + delta) / 64);
+	TFC_SetServo(0, 1.0 * (offset + delta) / 32);
 //	TERMINAL_PRINTF("CENTER = %4d OFF = %4d DEL = %4d LEDGE = %4d  REDGE = %4d\r", center, offset, delta, e_pos[0], e_pos[1]);
 	return offset;
 }
