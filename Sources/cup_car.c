@@ -10,8 +10,6 @@
 int output[128];
 //	int tmpImg[128];
 int i;
-int edge[2] = {0,0};
-int e_pos[2] = {5,123};
 int center = 64;
 int offset, deltaOffset, ampDiff, deltaAmpDiff;
 
@@ -67,6 +65,8 @@ void printLineScanData(int i)
 
 void procImage(int pValues[2], int pImage[128])
 {
+	int edge[2] = {0,0};
+	int e_pos[2] = {5,123};
 	memset(output, 0, sizeof(output));
 	if(TFC_Ticker[0]>50 && LineScanImageReady==1)
 	{
