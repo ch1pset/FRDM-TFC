@@ -9,27 +9,15 @@
 #define CUP_CAR_H_
 
 #include "TFC\TFC.h"
-#define SAMPLES 4
 
-typedef enum DIRECTION
-{
-	CENTER = 0x1,
-	LEFT = 0x02,
-	CENTER_L = 0x03,
-	RIGHT = 0x04,
-	CENTER_R = 0x05
-} DIR;
-
-typedef int img[128];
-
-void Drive(float strength);
+void Drive(float l_strength, float r_strength);
 void DriveT(int delayMS, float strength);
-void Steer(DIR d, float strength);
-int pidSteerControl(int center, int e_pos[2], int pOffset);
+void Steer(float strength);
+void pidSteerControl(int center, int e_pos[2], int edge[2], int pValues[2]);
+void pidDriveControl(float error);
 void Stop();
 
 void printLineScanData(int i);
-int procImage(int pOffset, int pImage[128]);
-int avgImage(int i, int s);
+void procImage(int pValues[2], int pImage[128]);
 
 #endif /* CUP_CAR_H_ */

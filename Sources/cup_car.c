@@ -7,6 +7,18 @@
 
 #include "cup_car.h"
 
+int output[128];
+//	int tmpImg[128];
+int i;
+int edge[2] = {0,0};
+int e_pos[2] = {5,123};
+int center = 64;
+int offset, deltaOffset, ampDiff, deltaAmpDiff;
+
+float error;
+float l_att, r_att;	//attenuation for left/right motor
+float max_strength;
+float strength[2];
 
 void DriveT(int delayMS, float strength)
 {
@@ -16,47 +28,31 @@ void DriveT(int delayMS, float strength)
 	TFC_HBRIDGE_DISABLE;
 }
 
-void Drive(float strength)
+void Drive(float l_strength, float r_strength)
 {
 	TFC_HBRIDGE_ENABLE;
-	TFC_SetMotorPWM(strength, strength);
+	TFC_SetMotorPWM(l_strength, r_strength);
+	TFC_Delay_mS(10);
 }
 
 void Stop()
 {
 	TFC_SetMotorPWM(0,0);
-	TFC_Delay_mS(20);
+	TFC_Delay_mS(10);
 	TFC_SetServo(0,0);
-	TFC_Delay_mS(20);
+	TFC_Delay_mS(10);
 	TFC_HBRIDGE_DISABLE;
 }
 
-void Steer(DIR d, float strength)
+void Steer(float strength)
 {
-	switch(d)
-	{
-		case LEFT: 
-			TFC_SetServo(0, -1.0 * strength);
-			break;
-		case RIGHT:
-			TFC_SetServo(0, strength);
-			break;
-		case CENTER:
-			TFC_SetServo(0,0);
-			break;
-		case CENTER_L:
-			TFC_SetServo(0, +0.05);
-			break;
-		case CENTER_R:
-			TFC_SetServo(0, -0.05);
-			break;
-	}
-//	TFC_Delay_mS(20);
+	TFC_SetServo(0, strength);
+	TFC_Delay_mS(10);
 }
 
 void printLineScanData(int i)
 {
-	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
+	if(TFC_Ticker[0]>50 && LineScanImageReady==1)
 	{
 		TFC_Ticker[0] = 0;
 		LineScanImageReady=0;
@@ -69,105 +65,96 @@ void printLineScanData(int i)
 	}
 }
 
-int procImage(int pOffset, int pImage[128])
+void procImage(int pValues[2], int pImage[128])
 {
-	int output[128];
-	int tmpImg[128];
-	int sobel[5] = {-1,-2,0,2,1};
-	int j;
-	int i;
-	int peak[2] = {0,127};
-	int edge[2] = {0,0};
-	int e_pos[2] = {5,123};
-	int center = 63;
-	
+	memset(output, 0, sizeof(output));
 	if(TFC_Ticker[0]>50 && LineScanImageReady==1)
 	{
 		TFC_Ticker[0] = 0;
 		LineScanImageReady=0;
 		
 		for(i=0;i<128;i++)
-		{
-			output[i] = 0;
+		{	
 			if(i >= 5 || i <= 123)
 			{
-//				for(j = 0; j < 5; j++)
-//					output[i] += sobel[j] * (int)(0 | LineScanImage0[i + j - 2]);
-
 				output[i] |=  (LineScanImage0[i+1] - LineScanImage0[i]);	//calc differnce(1st derivative)
 				
 				if(output[i] > 1000) output[i] = 0;		//set max value
 				if(output[i] < -1000) output[i] = 0;	//set min value
-//				if(output[i] <= 32 && output[i] >= -32) output[i] = 0;	//reduce low dB noise and false edges
+				if(output[i] < 5 && output[i] > -5) output[i] = 0;
 				
-				tmpImg[i] = output[i];
-				output[i] = (output[i] + pImage[i]) / 2;
-				pImage[i] = tmpImg[i];
+//				tmpImg[i] = output[i];
+//				output[i] += pImage[i];
+//				output[i] /= 2;
 				
-//				output[i] *= 10;
-				if(output[i] > edge[0] && output[i] > 125) //arbitrary threshold of 1000
+				if(output[i] >= edge[0])
 				{
 					edge[0] = output[i];
-					e_pos[0] = i;
+					e_pos[0] = i + 1;
 				}
-				if(output[i] < edge[1] && output[i] < -125) 
+				if(output[i] < edge[1]) 
 				{
 					edge[1] = output[i];
-					e_pos[1] = i;
+					e_pos[1] = i + 1;
 				}
-				if(e_pos[1] < e_pos[0]) e_pos[1] = e_pos[0];
-				if(e_pos[0] > e_pos[1]) e_pos[0] = e_pos[1];
+				
+//				pImage[i] = tmpImg[i];
 			}
-			TERMINAL_PRINTF("%d,", output[i]);
+
+//			TERMINAL_PRINTF("%d,", output[i]);  //print processed data to terminal, separated by commas
 		}
-		TERMINAL_PRINTF("\n");
-		return pidSteerControl(center, e_pos, pOffset);
+		
+//		TERMINAL_PRINTF("\n"); //print termination character(newline character)
+		pidSteerControl(center, e_pos, edge, pValues);
 	}
-	return pOffset;
 }
 
-int pidSteerControl(int center, int e_pos[2], int pOffset)
+void pidSteerControl(int center, int e_pos[2], int edge[2], int pValues[2])
 {
-	int offset = center - ((int)((e_pos[0] + e_pos[1])/ 2));
-	int delta = offset - pOffset;
-	TFC_SetServo(0, 1.0 * (offset + delta) / 32);
-//	TERMINAL_PRINTF("CENTER = %4d OFF = %4d DEL = %4d LEDGE = %4d  REDGE = %4d\r", center, offset, delta, e_pos[0], e_pos[1]);
-	return offset;
+	//Calculate current center offset from true center
+	offset = center - ((e_pos[0] + e_pos[1])/ 2);
+	if(offset < 10 && offset > -10) offset = 0;	//reduce oscillations, may need fine-tuning
+	deltaOffset = offset - pValues[0]; //calculate offset delta from last sample
+	
+	//calculate current amplitude difference between edges
+	ampDiff = edge[0] - (-1 * edge[1]);
+	if(ampDiff < 20 && ampDiff > -20) ampDiff = 0; //reduce oscillations, may need fine-tuning
+	deltaAmpDiff = ampDiff- pValues[1]; //get amp-diff delta from last sample
+	
+	//Error = AmpErr + OffsetErr
+	error = 1.0 * (ampDiff + deltaAmpDiff) / 1000; //1000 is maximum amp_diff/amp_delta
+	error += 1.0 * (offset + deltaOffset) / 64; //64 is maximum offset/delta(128 pixels / 2 = 64 pixels)
+	
+	Steer(error * 0.6); //Servo does not have full 180 degrees of motion. Use ranges 50% to 60%. Lower reduces turning radius. 60% is about max
+	pidDriveControl(error); //Use error for drive control
+	
+	//store current offset and amp_diff in pValues array
+	pValues[0] = offset;
+	pValues[1] = ampDiff;
+	
+	//Print all data to terminal.
+	TERMINAL_PRINTF("CENTER=%4d OFF=%4d DELOFF=%4d AMPD=%4d  DELAMPD=%4d  ERROR=%4d\r", center, offset, deltaOffset, e_pos[0], e_pos[1], error);
 }
-
-int images[SAMPLES][128];
-
-int avgImage(int i, int s)
+void pidDriveControl(float error)
 {
-	if(s < SAMPLES)
+	if(error < 0) //negative means turning right(oddly enough)
 	{
-		if(TFC_Ticker[0]>50 && LineScanImageReady==1)
-		{
-			TFC_Ticker[0] = 0;
-			LineScanImageReady=0;
-			for(i = 0; i < 128; i++)
-			{
-				images[s][i] = LineScanImage0[i];
-			}
-			s++;
-		}
+		l_att = -0.20 * error;	//if turning right, left motor gains a maximum of +20% speed
+		r_att = 0;
 	}
-	else
+	else //positive is turning left
 	{
-		int output[128];
-		memset(output, 0, sizeof(output));
-		for(i = 0; i < 128; i++)
-		{
-			int n;
-			for(n = 0; n < 4; n++)
-			{
-				output[i] += images[n][i];
-			}
-			output[i] = (output[i] >> (SAMPLES / 2));
-			TERMINAL_PRINTF("%d,",output[i]);
-		}
-		s = 0;
-		TERMINAL_PRINTF("\n");
+		r_att = 0.20 * error; //if turning left, right motor gains a maximum of +20% speed
+		l_att = 0;
 	}
-	return s;
+	max_strength = TFC_ReadPot(0); //set max speed with pot 0
+	
+	//When turning, top speed is reduced by a maximum of -15%
+	//with an additional maximum of +5% speed for the
+	//specific motor used to overdrive one side of the car for
+	//better steer control
+	strength[0] = max_strength - (-0.15 * error) + l_att; //left motor
+	strength[1] = max_strength - (0.15 * error) + r_att; //right motor
+	Drive(strength[0], strength[1]);
 }
+

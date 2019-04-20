@@ -139,7 +139,7 @@ void toggleLED(uint8 mode, unsigned int msHold)
 	TFC_Delay_mS(msHold);
 }
 
-int offset = 0;
+int pValues[2];
 int image[128];
 int driving = 0;
 int main(void)
@@ -147,6 +147,7 @@ int main(void)
 	TFC_Init();
 	t = 0;
 	i = 0;
+	memset(image, 0, sizeof(image));
 	Stop();
 	while (!(TFC_PUSH_BUTTON_0_PRESSED))
 	{ 	
@@ -154,16 +155,14 @@ int main(void)
 		toggleLED(0, 500);
 	}
 	TFC_Delay_mS(1000);
-	int s = 0;
 	for(;;)
 	{
-		TFC_Task();
-		if(TFC_PUSH_BUTTON_1_PRESSED) 
+		TFC_Task(); //keep this inside for loop, needed for terminal
+		if(TFC_PUSH_BUTTON_1_PRESSED) //Button B 
 		{
 			if(driving)
 			{
 				driving = 0;
-				Stop();
 			}
 			else
 			{
@@ -171,13 +170,20 @@ int main(void)
 			}
 			TFC_Delay_mS(500);
 		}
-		if(driving) Drive(TFC_ReadPot(0));
-		switch((TFC_GetDIP_Switch()>>1)&0x03)
+		if(driving)
 		{
-			case 1: offset = procImage(offset, image); break;
-			case 2: s = avgImage(i,s); break;
-			default: printLineScanData(i); break;
+			switch((TFC_GetDIP_Switch()))
+			{
+				case 1: //Switch labeled 1
+					procImage(pValues, image); 
+					break;
+				default: //No Switches
+					Stop();
+					printLineScanData(i); 
+					break;
+			}
 		}
+		else Stop();
 	}
 	
 	return 0;
