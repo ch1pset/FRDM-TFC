@@ -18,6 +18,10 @@ float l_att, r_att;	//attenuation for left/right motor
 float max_strength;
 float strength[2];
 
+/**
+ * Sets both motors to specified strength value
+ * for specified time in milliseconds
+ */
 void DriveT(int delayMS, float strength)
 {
 	TFC_HBRIDGE_ENABLE;
@@ -26,6 +30,10 @@ void DriveT(int delayMS, float strength)
 	TFC_HBRIDGE_DISABLE;
 }
 
+/**
+ * Enables HBridge and sets each motor to specified strength values individually.
+ * Adds a 10ms delay after sending signal.
+ */
 void Drive(float l_strength, float r_strength)
 {
 	TFC_HBRIDGE_ENABLE;
@@ -33,6 +41,9 @@ void Drive(float l_strength, float r_strength)
 	TFC_Delay_mS(10);
 }
 
+/**
+ * Sets motors to 0 strength, centers servo position, and disables HBridge
+ */
 void Stop()
 {
 	TFC_SetMotorPWM(0,0);
@@ -42,12 +53,18 @@ void Stop()
 	TFC_HBRIDGE_DISABLE;
 }
 
+/**
+ * Sets servo to specified position and adds 10ms delay after sending signal
+ */
 void Steer(float strength)
 {
 	TFC_SetServo(0, strength);
 	TFC_Delay_mS(10);
 }
 
+/**
+ * Sends raw line scan camera data to terminal
+ */
 void printLineScanData(int i)
 {
 	if(TFC_Ticker[0]>50 && LineScanImageReady==1)
@@ -63,6 +80,11 @@ void printLineScanData(int i)
 	}
 }
 
+/**
+ * Processes line scan camera data by calculating the central difference of each pixel
+ * from i = 5 to 123. Also finds edges by looking for the max and min values of the
+ * curve.
+ */
 void procImage(int pValues[2], int pImage[128])
 {
 	int edge[2] = {0,0};
@@ -77,7 +99,7 @@ void procImage(int pValues[2], int pImage[128])
 		{	
 			if(i >= 5 || i <= 123)
 			{
-				output[i] |=  (LineScanImage0[i+1] - LineScanImage0[i]);	//calc differnce(1st derivative)
+				output[i] =  (LineScanImage0[i+1] - LineScanImage0[i-1]) / 2;	//central difference for smoother output
 				
 				if(output[i] > 1000) output[i] = 0;		//set max value
 				if(output[i] < -1000) output[i] = 0;	//set min value
@@ -109,6 +131,11 @@ void procImage(int pValues[2], int pImage[128])
 	}
 }
 
+/**
+ * Finds offset from center based on edge positions as well as the difference in amplitude
+ * of the max and min values to calculate an error from -1.0 to 1.0
+ * Error is used to steer the car.
+ */
 void pidSteerControl(int center, int e_pos[2], int edge[2], int pValues[2])
 {
 	//Calculate current center offset from true center
@@ -135,6 +162,11 @@ void pidSteerControl(int center, int e_pos[2], int edge[2], int pValues[2])
 	//Print all data to terminal.
 	TERMINAL_PRINTF("CENTER=%4d OFF=%4d DELOFF=%4d AMPD=%4d  DELAMPD=%4d  ERROR=%4d\r", center, offset, deltaOffset, e_pos[0], e_pos[1], error);
 }
+
+/**
+ * Uses error calculated from steer control function to determine when to slow down for corners
+ * and to speed up individual wheels for faster turns.
+ */
 void pidDriveControl(float error)
 {
 	if(error < 0) //negative means turning right(oddly enough)
