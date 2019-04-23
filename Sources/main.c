@@ -47,7 +47,7 @@ int main(void)
 			{
 				driving = 1;
 			}
-			TFC_Delay_mS(500);
+			TFC_Delay_mS(250);
 		}
 		if(driving)
 		{
