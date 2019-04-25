@@ -137,17 +137,19 @@ void pidSteerControl(int center, int e_pos[2], int edge[2], int pValues[2])
 {
 	//Calculate current center offset from true center
 	offset = center - ((e_pos[0] + e_pos[1])/ 2);
-	if(offset < 2 && offset > -2) offset = 0;	//reduce oscillations, may need fine-tuning
+//	if(offset < 1 && offset > -1) offset = 0;	//reduce oscillations, may need fine-tuning
 	deltaOffset = offset - pValues[0]; //calculate offset delta from last sample
 	
 	//calculate current amplitude difference between edges
 	ampDiff = edge[0] - (-1 * edge[1]);
-	if(ampDiff < 2 && ampDiff > -2) ampDiff = 0; //reduce oscillations, may need fine-tuning
+//	if(ampDiff < 4 && ampDiff > -4) ampDiff = 0; //reduce oscillations, may need fine-tuning
 	deltaAmpDiff = ampDiff- pValues[ 1]; //get amp-diff delta from last sample
 	
 	//Error = AmpErr + OffsetErr
 	error = 1.0 * (ampDiff + deltaAmpDiff) / 2048; //2048 is maximum amp_diff/amp_delta
 	error += 1.0 * (offset + deltaOffset) / 64; //64 is maximum offset/delta(128 pixels / 2 = 64 pixels)
+	if(error > 1.0) error = 1.0;
+	if(error < -1.0) error = -1.0;
 	
 	Steer(error * TFC_ReadPot(1)); //Servo does not have full 180 degrees of motion. Lower reduces turning radius.
 	pidDriveControl(error); //Use error for drive control
@@ -168,13 +170,17 @@ void pidDriveControl(float error)
 {
 	if(error < 0) //negative means turning right(oddly enough)
 	{
-		l_att = -0.15 * error;	//if turning right, left motor gains a maximum of +15% speed
+		l_att = -0.5 * error;	//if turning right, left motor gains a maximum of +15% speed
 		r_att = 0;
+		strength[0] = max_strength - (-0.4 * error) + l_att; //left motor
+		strength[1] = max_strength - (-0.4 * error) + r_att; //right motor
 	}
 	else //positive is turning left
 	{
-		r_att = 0.15 * error; //if turning left, right motor gains a maximum of +15% speed
+		r_att = 0.5 * error; //if turning left, right motor gains a maximum of +15% speed
 		l_att = 0;
+		strength[0] = max_strength - (0.4 * error) + l_att; //left motor
+		strength[1] = max_strength - (0.4 * error) + r_att; //right motor
 	}
 	max_strength = TFC_ReadPot(0); //set max speed with pot 0
 	
@@ -182,8 +188,6 @@ void pidDriveControl(float error)
 	//with an additional maximum of +5% speed for the
 	//specific motor used to overdrive one side of the car for
 	//better steer control
-	strength[0] = max_strength - (-0.6 * error) + l_att; //left motor
-	strength[1] = max_strength - (0.6 * error) + r_att; //right motor
 	Drive(strength[0], strength[1]);
 }
 
