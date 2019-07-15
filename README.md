@@ -1,4 +1,4 @@
-# FRDM-TFC
+# KL25Z Cup Car Project
 > Team: Josh Gonzales, Alek Greer, Zachary Watson, Juan Rodriguez, Sam Floriani
 
 Cup Car Project for Microcomputer Systems II class
