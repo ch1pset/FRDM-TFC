@@ -1,5 +1,5 @@
 # FRDM-TFC
-> Team: Josh Gonzales, Alek Greer, Zachary Watson, Juan , Sam Floriani
+> Team: Josh Gonzales, Alek Greer, Zachary Watson, Juan Rodriguez, Sam Floriani
 
 Cup Car Project for Microcomputer Systems II class
 
@@ -11,7 +11,7 @@ The Cup Car is a small autonomous vehicle that traverses a race track. The car c
 + 1 H-Bridge
 + 1 Servo
 + 1 NXP FRDM-KL25Z Microcontroller
-+ 1 NXP made interface board with 2 POTS
++ 1 Freescale FRDM-TFC board with 2 POTS
 
 ### How does it work?
 We wrote a simple image processing algorithm that takes the data from the Linescan Camera and transforms it by taking the `central finite difference` to get the 1st derivative of the signal. Then, we use each peak to determine where the edges of the track are. The track is white, with black borders, so the input signal from the camera appears as a trapezoid. With this processed data, we developed a PID controller that used the difference between the current and the last frame to determine the drive and steering.
