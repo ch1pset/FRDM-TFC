@@ -1,5 +1,5 @@
 # FRDM-TFC
-_____
+> Team: Josh Gonzales, Alek Greer, Zachary Watson, Juan , Sam Floriani
 Cup Car Project for Microcomputer Systems II class
 
 ### What is it?
