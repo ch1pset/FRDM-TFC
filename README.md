@@ -1,4 +1,6 @@
 # KL25Z Cup Car Project
+> Institution: University of Texas at San Antonio
+> Instructor: Dr. Morton, P.
 > Team: Josh Gonzales, Alek Greer, Zachary Watson, Juan Rodriguez, Sam Floriani
 
 Cup Car Project for Microcomputer Systems II class
